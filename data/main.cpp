@@ -42,7 +42,7 @@ arma::imat readbed(std::string bedfn, int bytes_snp, int nsnp_toread) {
 	for(int i=0; i<bytes_read; i++) {
 		bed_int_vec.insert(bed_int_vec.end(), gencodes[buffer[i]].begin(), gencodes[buffer[i]].end());
 	}
-	arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_read, 1, false, true);
+	arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread, false, true);
 
 	free(buffer);
 	return bed_int;
