@@ -1,9 +1,8 @@
 #include <string>
 #include <vector>
-#include <stdlib.h>
-#include <stdio.h>
-#include "RcppArmadillo.h"
 #include "gencodes.h"
+
+#include "RcppArmadillo.h"
 
 // via the depends attribute we tell Rcpp to create hooks for
 // RcppArmadillo so that the build process will know what to do
@@ -42,7 +41,8 @@ arma::imat readbed(std::string bedfn, int bytes_snp, int nsnp_toread) {
 	for(int i=0; i<bytes_read; i++) {
 		bed_int_vec.insert(bed_int_vec.end(), gencodes[buffer[i]].begin(), gencodes[buffer[i]].end());
 	}
-	arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread, false, true);
+	// arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread, false, true);
+	arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread);
 
 	free(buffer);
 	return bed_int;
