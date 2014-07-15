@@ -14,7 +14,7 @@ using namespace Rcpp;
 using namespace std;
 
 // [[Rcpp::export]]
-arma::imat readbed(std::string bedfn, int bytes_snp, int nsnp_toread) {
+arma::imat readbed(std::string bedfn, int bytes_snp, int nsnp_toread, int nindiv) {
 	FILE* file_in;
 	unsigned char* buffer = 0;
 	file_in = fopen(bedfn.c_str(), "rb");
@@ -35,56 +35,38 @@ arma::imat readbed(std::string bedfn, int bytes_snp, int nsnp_toread) {
 		throw "Failed to read into buffer!";
 	}
 
+	// expand each byte into 4 genotypes
 	std::vector<int> bed_int_vec;
 	bed_int_vec.reserve(sizeof(int) * 4 * bytes_read);
-	// for(unsigned char i : buffer) {
 	for(int i=0; i<bytes_read; i++) {
 		bed_int_vec.insert(bed_int_vec.end(), gencodes[buffer[i]].begin(), gencodes[buffer[i]].end());
 	}
-	// arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread, false, true);
 	arma::imat bed_int(&bed_int_vec.front(), 4 * bytes_snp, nsnp_toread);
+	arma::imat bed_int_strip;
+	bed_int_strip = bed_int(arma::span(0, nindiv-1), arma::span::all);
+
 
 	free(buffer);
-	return bed_int;
+	return bed_int_strip;
 }
 
-// [[Rcpp::export]]
-void testvec1() {
-	std::vector<double> y;
-	y.push_back(1);
-	y.push_back(2);
-	y.push_back(3);
-	
-	arma::mat x(&y.front(), 3, 1);
-	x.print();
-}
+
 
 // [[Rcpp::export]]
-void testvec2() {
-	std::vector<double> y;
-	vector<double> y1 {1, 2};
-	vector<double> y2 {1, 3};
-	vector<double> y3 {1, 4};
-	y.reserve(y1.size() * 3);
-	y.insert(y.end(), y1.begin(), y1.end());
-	y.insert(y.end(), y2.begin(), y2.end());
-	y.insert(y.end(), y3.begin(), y3.end());
-	
-	arma::mat x(&y.front(), 6, 1);
-	x.print();
+arma::mat testcols(arma::mat x, arma::Col<unsigned int> idx) {
+	arma::mat xsub;
+	xsub = x.cols(idx-1);
+	return xsub;
 }
-
 // [[Rcpp::export]]
-void vecvec() {
-	const std::vector< std::vector<int> > y {
-		std::vector<int> {1, 2},
-		std::vector<int> {3, 4},
-		std::vector<int> {5, 6}
-	};
-	for(std::vector<int> i : y) {
-		for(int j : i) {
-			Rcout << j << "\t";
-		}
-		Rcout << "\n";
-	}
+arma::mat testrows(arma::mat x, arma::Col<unsigned int> idx) {
+	arma::mat xsub;
+	xsub = x.rows(idx-1);
+	return xsub;
+}
+// [[Rcpp::export]]
+arma::mat testcr(arma::mat x, arma::Col<unsigned int> ridx, arma::Col<unsigned int> cidx) {
+	arma::mat xsub;
+	xsub = x.submat(ridx-1, cidx-1);
+	return xsub;
 }
