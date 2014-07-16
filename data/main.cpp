@@ -75,7 +75,8 @@ arma::imat readbed(std::string bedfn, unsigned int bytes_snp, unsigned int snp_s
 	unsigned int bytes_read = bytes_snp * nsnp_toread;
 	unsigned int bytes_skip = bytes_snp * (snp_start - 1) + 3;
 	unsigned char* buffer = 0;
-	buffer = (unsigned char *)malloc(bytes_read);
+	// buffer = (unsigned char *)malloc(bytes_read);
+	buffer = new unsigned char[bytes_read];
 	if (!buffer) {
 		fclose(file_in);
 		fprintf(stderr, "Memory error!");
@@ -98,7 +99,8 @@ arma::imat readbed(std::string bedfn, unsigned int bytes_snp, unsigned int snp_s
 	bed_int_strip = bed_int(arma::span(0, nindiv-1), arma::span::all);
 
 
-	free(buffer);
+	// free(buffer);
+	delete[] buffer;
 	return bed_int_strip;
 }
 

@@ -14,5 +14,5 @@ using namespace Rcpp;
 using namespace std;
 
 void testpointer() {
-	
+	Rcout << "hi" << "\n";
 }

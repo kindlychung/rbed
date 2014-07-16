@@ -3,8 +3,6 @@ getwd()
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 require(Rcpp)
 sourceCpp("main.cpp")
-addint(2, 3);
-addstr("Hello, ", "world!");
 x = rbInterval("test.bed", 2, 2, 12, 6)
 x
 
