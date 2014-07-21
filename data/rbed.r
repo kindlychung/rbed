@@ -3,8 +3,12 @@ getwd()
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 require(Rcpp)
 sourceCpp("main.cpp")
-x = rbInterval("test.bed", 2, 2, 12, 6)
+x = rbSnpinter("test.bed", 2, 1, 12, 6)
+x = rbSnpinterInd("test.bed", 2, 1, 12, 6, 4:1)
 x
+y = rbSnpvec("test.bed", 2, c(1, 4, 12), 6)
+y
+
 
 Rbed = setRefClass("Rbed",
     fields = list(
