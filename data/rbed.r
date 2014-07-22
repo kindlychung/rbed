@@ -4,9 +4,12 @@ Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 require(Rcpp)
 sourceCpp("main.cpp")
 x = rbSnpinter("test.bed", 2, 1, 12, 6)
-x = rbSnpinterInd("test.bed", 2, 1, 12, 6, 4:1)
+x
+x = rbSnpinterInd("test.bed", 2, 1, 12, 6, c(1, 3))
 x
 y = rbSnpvec("test.bed", 2, c(1, 4, 12), 6)
+y
+y = rbSnpvecInd("test.bed", 2, c(1, 4, 12), 6, c(1, 3))
 y
 
 
@@ -24,8 +27,9 @@ Rbed = setRefClass("Rbed",
     ))
 
 Rbed$methods(
+    # get the stem of a bed file path, removes the .bed extension at the end
     getstem = function(pathname) {
-        gsub("(.*?)(\\.[^./]+)+", "\\1", pathname)
+        gsub("^(.*)\\.bed$", "\\1", pathname)
     }
 )
 
@@ -40,11 +44,11 @@ Rbed$methods(
 )
 
 
-Rbed$methods(
-    bedmat = function() {
-        readbed(bedpath, bytes_snp, nsnp)
-    }
-)
+## Rbed$methods(
+##     bedmat = function() {
+##         readbed(bedpath, bytes_snp, nsnp)
+##     }
+## )
 
 Rbed$methods(
     initialize = function(bed) {
@@ -56,9 +60,18 @@ Rbed$methods(
         nindiv <<- R.utils::countLines(fampath)
         bytes_snp <<- ceiling(nindiv / 4)
         nindivApparent <<- bytes_snp * 4
-        snp <<- "0"
+        snp <<- read.table(pipe())
+        indiv << 
     }
 )
 
-rbedobj = Rbed("test")
-rbedobj$bedmat()
+rbedobj = Rbed("test.bed")
+rbedobj$bedpath
+rbedobj$fampath
+rbedobj$bimpath
+rbedobj$bedstem
+rbedobj$nsnp
+rbedobj$nindiv
+rbedobj$nindivApparent
+rbedobj$bytes_snp
+
