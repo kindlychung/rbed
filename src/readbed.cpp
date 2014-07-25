@@ -1,23 +1,8 @@
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include "gencodes.h"
-
-#include "RcppArmadillo.h"
-
-// via the depends attribute we tell Rcpp to create hooks for
-// RcppArmadillo so that the build process will know what to do
-//
-// [[Rcpp::depends(RcppArmadillo)]]
-
-typedef arma::Col<unsigned int> uintvec;
-
-using namespace Rcpp;
-using namespace std;
+#include "readbed.h"
 
 arma::imat readbed(std::string bedfn,
 				   unsigned int bytes_snp,
-				   uintvec snp_vec,
+				   arma::Col<unsigned int> snp_vec,
 				   unsigned int nindiv) {
 	// open the file handle on .bed file
 	FILE* file_in;
@@ -29,15 +14,15 @@ arma::imat readbed(std::string bedfn,
 	unsigned int nsnp_toread = snp_vec.n_elem;
 	unsigned int bytes_read = bytes_snp * nsnp_toread;
 
-	uintvec snp_skip_vec = (snp_vec - 1) * bytes_snp + 3;
-	uintvec::iterator snp_skip_start = snp_skip_vec.begin();
-	uintvec::iterator snp_skip_end = snp_skip_vec.end();
+	arma::Col<unsigned int> snp_skip_vec = (snp_vec - 1) * bytes_snp + 3;
+	arma::Col<unsigned int>::iterator snp_skip_start = snp_skip_vec.begin();
+	arma::Col<unsigned int>::iterator snp_skip_end = snp_skip_vec.end();
 
 	std::vector<unsigned char> buffer;
 	buffer.reserve(bytes_read);
 	std::vector<unsigned char> snp_buffer(bytes_snp);
 
-	for(uintvec::iterator offset_i = snp_skip_start; offset_i != snp_skip_end; offset_i++) {
+	for(arma::Col<unsigned int>::iterator offset_i = snp_skip_start; offset_i != snp_skip_end; offset_i++) {
 		fseeko(file_in, *offset_i, SEEK_SET);
 		size_t fread_ret = fread(&snp_buffer.front(), bytes_snp, 1, file_in);
 		if(! fread_ret) {
@@ -61,9 +46,9 @@ arma::imat readbed(std::string bedfn,
 
 arma::imat readbed(std::string bedfn,
 				   unsigned int bytes_snp,
-				   uintvec snp_vec,
+				   arma::Col<unsigned int> snp_vec,
 				   unsigned int nindiv,
-				   uintvec indiv_vec) {
+				   arma::Col<unsigned int> indiv_vec) {
 	arma::imat bedmat_snpsel = readbed(bedfn, bytes_snp, snp_vec, nindiv);
 	arma::imat bedmat_snpsel_indivsel;
 	bedmat_snpsel_indivsel = bedmat_snpsel.rows(indiv_vec - 1);
@@ -111,17 +96,19 @@ arma::imat readbed(std::string bedfn,
 				   unsigned int snp_start,
 				   unsigned int snp_end,
 				   unsigned int nindiv,
-				   uintvec indiv_vec) {
+				   arma::Col<unsigned int> indiv_vec) {
 	arma::imat bedmat_snpsel = readbed(bedfn, bytes_snp, snp_start, snp_end, nindiv);
 	arma::imat bedmat_snpsel_indivsel;
 	bedmat_snpsel_indivsel = bedmat_snpsel.rows(indiv_vec - 1);
 	return bedmat_snpsel_indivsel;
 }
 
+///////////////// export the following to R //////////////////
+
 // [[Rcpp::export]]
 arma::imat rbSnpvec(std::string bedfn,
 				   unsigned int bytes_snp,
-				   uintvec snp_vec,
+				   arma::Col<unsigned int> snp_vec,
 				   unsigned int nindiv) {
 	return readbed(bedfn, bytes_snp, snp_vec, nindiv);
 }
@@ -129,9 +116,9 @@ arma::imat rbSnpvec(std::string bedfn,
 // [[Rcpp::export]]
 arma::imat rbSnpvecInd(std::string bedfn,
 				       unsigned int bytes_snp,
-				       uintvec snp_vec,
+				       arma::Col<unsigned int> snp_vec,
 					   unsigned int nindiv,
-					   uintvec indiv_vec
+					   arma::Col<unsigned int> indiv_vec
 					   ) {
 	return readbed(bedfn, bytes_snp, snp_vec, nindiv, indiv_vec);
 }
@@ -152,7 +139,7 @@ arma::imat rbSnpinterInd(std::string bedfn,
 					     unsigned int snp_start,
 					     unsigned int snp_end,
 						 unsigned int nindiv,
-						 uintvec indiv_vec
+						 arma::Col<unsigned int> indiv_vec
 					  ) {
 	return readbed(bedfn, bytes_snp, snp_start, snp_end, nindiv, indiv_vec);
 }

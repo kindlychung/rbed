@@ -6,59 +6,92 @@
 
 using namespace Rcpp;
 
-// rcpparma_hello_world
-arma::mat rcpparma_hello_world();
-RcppExport SEXP rbed_rcpparma_hello_world() {
+// bimReadCol
+CharacterVector bimReadCol(std::string fn, unsigned int ncol_select);
+RcppExport SEXP rbed_bimReadCol(SEXP fnSEXP, SEXP ncol_selectSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        arma::mat __result = rcpparma_hello_world();
+        Rcpp::traits::input_parameter< std::string >::type fn(fnSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type ncol_select(ncol_selectSEXP );
+        CharacterVector __result = bimReadCol(fn, ncol_select);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
     return __sexp_result;
 END_RCPP
 }
-// rcpparma_outerproduct
-arma::mat rcpparma_outerproduct(const arma::colvec& x);
-RcppExport SEXP rbed_rcpparma_outerproduct(SEXP xSEXP) {
+// rbSnpvec
+arma::imat rbSnpvec(std::string bedfn, unsigned int bytes_snp, arma::Col<unsigned int> snp_vec, unsigned int nindiv);
+RcppExport SEXP rbed_rbSnpvec(SEXP bedfnSEXP, SEXP bytes_snpSEXP, SEXP snp_vecSEXP, SEXP nindivSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP );
-        arma::mat __result = rcpparma_outerproduct(x);
+        Rcpp::traits::input_parameter< std::string >::type bedfn(bedfnSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type bytes_snp(bytes_snpSEXP );
+        Rcpp::traits::input_parameter< arma::Col<unsigned int> >::type snp_vec(snp_vecSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type nindiv(nindivSEXP );
+        arma::imat __result = rbSnpvec(bedfn, bytes_snp, snp_vec, nindiv);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
     return __sexp_result;
 END_RCPP
 }
-// rcpparma_innerproduct
-double rcpparma_innerproduct(const arma::colvec& x);
-RcppExport SEXP rbed_rcpparma_innerproduct(SEXP xSEXP) {
+// rbSnpvecInd
+arma::imat rbSnpvecInd(std::string bedfn, unsigned int bytes_snp, arma::Col<unsigned int> snp_vec, unsigned int nindiv, arma::Col<unsigned int> indiv_vec);
+RcppExport SEXP rbed_rbSnpvecInd(SEXP bedfnSEXP, SEXP bytes_snpSEXP, SEXP snp_vecSEXP, SEXP nindivSEXP, SEXP indiv_vecSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP );
-        double __result = rcpparma_innerproduct(x);
+        Rcpp::traits::input_parameter< std::string >::type bedfn(bedfnSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type bytes_snp(bytes_snpSEXP );
+        Rcpp::traits::input_parameter< arma::Col<unsigned int> >::type snp_vec(snp_vecSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type nindiv(nindivSEXP );
+        Rcpp::traits::input_parameter< arma::Col<unsigned int> >::type indiv_vec(indiv_vecSEXP );
+        arma::imat __result = rbSnpvecInd(bedfn, bytes_snp, snp_vec, nindiv, indiv_vec);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
     return __sexp_result;
 END_RCPP
 }
-// rcpparma_bothproducts
-Rcpp::List rcpparma_bothproducts(const arma::colvec& x);
-RcppExport SEXP rbed_rcpparma_bothproducts(SEXP xSEXP) {
+// rbSnpinter
+arma::imat rbSnpinter(std::string bedfn, unsigned int bytes_snp, unsigned int snp_start, unsigned int snp_end, unsigned int nindiv);
+RcppExport SEXP rbed_rbSnpinter(SEXP bedfnSEXP, SEXP bytes_snpSEXP, SEXP snp_startSEXP, SEXP snp_endSEXP, SEXP nindivSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP );
-        Rcpp::List __result = rcpparma_bothproducts(x);
+        Rcpp::traits::input_parameter< std::string >::type bedfn(bedfnSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type bytes_snp(bytes_snpSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type snp_start(snp_startSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type snp_end(snp_endSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type nindiv(nindivSEXP );
+        arma::imat __result = rbSnpinter(bedfn, bytes_snp, snp_start, snp_end, nindiv);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// rbSnpinterInd
+arma::imat rbSnpinterInd(std::string bedfn, unsigned int bytes_snp, unsigned int snp_start, unsigned int snp_end, unsigned int nindiv, arma::Col<unsigned int> indiv_vec);
+RcppExport SEXP rbed_rbSnpinterInd(SEXP bedfnSEXP, SEXP bytes_snpSEXP, SEXP snp_startSEXP, SEXP snp_endSEXP, SEXP nindivSEXP, SEXP indiv_vecSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< std::string >::type bedfn(bedfnSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type bytes_snp(bytes_snpSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type snp_start(snp_startSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type snp_end(snp_endSEXP );
+        Rcpp::traits::input_parameter< unsigned int >::type nindiv(nindivSEXP );
+        Rcpp::traits::input_parameter< arma::Col<unsigned int> >::type indiv_vec(indiv_vecSEXP );
+        arma::imat __result = rbSnpinterInd(bedfn, bytes_snp, snp_start, snp_end, nindiv, indiv_vec);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
