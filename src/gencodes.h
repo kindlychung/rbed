@@ -1,3 +1,6 @@
+#pragma once
+
+#include "armaheader.h"
 const std::vector< std::vector<int> > gencodes {
     std::vector<int> {2, 2, 2, 2},
     std::vector<int> {-9, 2, 2, 2},

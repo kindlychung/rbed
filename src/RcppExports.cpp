@@ -6,22 +6,6 @@
 
 using namespace Rcpp;
 
-// bimReadCol
-CharacterVector bimReadCol(std::string fn, unsigned int ncol_select);
-RcppExport SEXP rbed_bimReadCol(SEXP fnSEXP, SEXP ncol_selectSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< std::string >::type fn(fnSEXP );
-        Rcpp::traits::input_parameter< unsigned int >::type ncol_select(ncol_selectSEXP );
-        CharacterVector __result = bimReadCol(fn, ncol_select);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
 // rbSnpvec
 arma::imat rbSnpvec(std::string bedfn, unsigned int bytes_snp, arma::Col<unsigned int> snp_vec, unsigned int nindiv);
 RcppExport SEXP rbed_rbSnpvec(SEXP bedfnSEXP, SEXP bytes_snpSEXP, SEXP snp_vecSEXP, SEXP nindivSEXP) {
@@ -92,6 +76,22 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< unsigned int >::type nindiv(nindivSEXP );
         Rcpp::traits::input_parameter< arma::Col<unsigned int> >::type indiv_vec(indiv_vecSEXP );
         arma::imat __result = rbSnpinterInd(bedfn, bytes_snp, snp_start, snp_end, nindiv, indiv_vec);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// readcols
+std::vector<std::vector<std::string> > readcols(std::string fn, std::vector<unsigned int> colsel);
+RcppExport SEXP rbed_readcols(SEXP fnSEXP, SEXP colselSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< std::string >::type fn(fnSEXP );
+        Rcpp::traits::input_parameter< std::vector<unsigned int> >::type colsel(colselSEXP );
+        std::vector<std::vector<std::string> > __result = readcols(fn, colsel);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

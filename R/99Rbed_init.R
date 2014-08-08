@@ -1,6 +1,6 @@
 Rbed$methods(
-    initialize = function(bed) {
-        bedstem <<- getstem(bed)
+    initialize = function(bedstem) {
+        bedstem <<- bedstem
         bedpath <<- paste(bedstem, "bed", sep=".")
         fampath <<- paste(bedstem, "fam", sep=".")
         bimpath <<- paste(bedstem, "bim", sep=".")
@@ -8,6 +8,6 @@ Rbed$methods(
         nindiv <<- R.utils::countLines(fampath)
         bytes_snp <<- ceiling(nindiv / 4)
         nindivApparent <<- bytes_snp * 4
-        snp <<- bimReadCol(bimpath, 2);
+        snp <<- readcols(bimpath, 2)[[1]];
     }
 )

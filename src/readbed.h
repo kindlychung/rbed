@@ -1,8 +1,11 @@
+#pragma once
 #include <string>
 #include <vector>
 #include <cstdlib>
 #include "gencodes.h"
-#include "utils.h"
+#include "countlines.h"
+#include "fileExists.h"
+#include "armaheader.h"
 
 using namespace Rcpp;
 using namespace std;
