@@ -17,7 +17,7 @@ rbSnpinterInd <- function(bedfn, bytes_snp, snp_start, snp_end, nindiv, indiv_ve
     .Call('rbed_rbSnpinterInd', PACKAGE = 'rbed', bedfn, bytes_snp, snp_start, snp_end, nindiv, indiv_vec)
 }
 
-readcols <- function(fn, colsel) {
-    .Call('rbed_readcols', PACKAGE = 'rbed', fn, colsel)
+readcols <- function(fn, colsel, nFirstSkipLines, nSkipUnit) {
+    .Call('rbed_readcols', PACKAGE = 'rbed', fn, colsel, nFirstSkipLines, nSkipUnit)
 }
 

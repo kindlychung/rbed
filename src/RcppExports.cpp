@@ -83,15 +83,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // readcols
-std::vector<std::vector<std::string> > readcols(std::string fn, std::vector<unsigned int> colsel);
-RcppExport SEXP rbed_readcols(SEXP fnSEXP, SEXP colselSEXP) {
+std::vector<std::vector<std::string> > readcols(std::string fn, std::vector<unsigned int> colsel, size_t nFirstSkipLines, size_t nSkipUnit);
+RcppExport SEXP rbed_readcols(SEXP fnSEXP, SEXP colselSEXP, SEXP nFirstSkipLinesSEXP, SEXP nSkipUnitSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< std::string >::type fn(fnSEXP );
         Rcpp::traits::input_parameter< std::vector<unsigned int> >::type colsel(colselSEXP );
-        std::vector<std::vector<std::string> > __result = readcols(fn, colsel);
+        Rcpp::traits::input_parameter< size_t >::type nFirstSkipLines(nFirstSkipLinesSEXP );
+        Rcpp::traits::input_parameter< size_t >::type nSkipUnit(nSkipUnitSEXP );
+        std::vector<std::vector<std::string> > __result = readcols(fn, colsel, nFirstSkipLines, nSkipUnit);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

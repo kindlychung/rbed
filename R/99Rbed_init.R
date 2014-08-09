@@ -8,6 +8,6 @@ Rbed$methods(
         nindiv <<- R.utils::countLines(fampath)
         bytes_snp <<- ceiling(nindiv / 4)
         nindivApparent <<- bytes_snp * 4
-        snp <<- readcols(bimpath, 2)[[1]];
+        snp <<- readcols(bimpath, 2, 0, 1)[[1]];
     }
 )

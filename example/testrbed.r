@@ -30,12 +30,5 @@ x
 x = rbedobj$bedmat.snpvec.ind(c(1, 3, 12), c(1, 2, 6))
 x
 
-
-
-print("hi")
-a = matrix(1:16, 4)
-a * 4
-
-setwd("/tmp")
-require("RcppArmadillo")
-RcppArmadillo.package.skeleton("rskeleton")
+plinkoutfie = "~/Desktop/RS123_1kg.assoc.linear"
+x = readplinkoutr(plinkoutfie, c("CHR", "SNP", "BP", "TEST", "P"))
