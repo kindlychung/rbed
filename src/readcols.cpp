@@ -8,7 +8,7 @@
 #include "readcols.h"
 
 // [[Rcpp::export]]
-std::vector<std::vector<std::string> > readcols(std::string fn,
+std::vector< std::vector<std::string> > readcols(std::string fn,
 		std::vector<unsigned int> colsel, size_t nFirstSkipLines,
 		size_t nSkipUnit) {
 
@@ -18,28 +18,32 @@ std::vector<std::vector<std::string> > readcols(std::string fn,
 
 
 	size_t nc_file = ncols(fn);
-	Rcpp::Rcout << "File has " << nc_file << " columns \n";
+	std::cout << "File has " << nc_file << " columns \n";
 	size_t nr_file = countlines(fn);
-	Rcpp::Rcout << "File has " << nr_file << " rows \n";
+	std::cout << "File has " << nr_file << " rows \n";
 
-	Rcpp::Rcout << "You want to skip the first " <<  nFirstSkipLines << " lines \n";
-	Rcpp::Rcout << "Of the rest you want to select one line out of every " << nSkipUnit << " lines \n";
+	std::cout << "You want to skip the first " <<  nFirstSkipLines << " lines \n";
+	std::cout << "Of the rest you want to select one line out of every " << nSkipUnit << " lines \n";
 	size_t nr = (size_t) ((nr_file - nFirstSkipLines) / nSkipUnit);
-	Rcpp::Rcout << "You selected " << nr << " rows \n";
+	std::cout << "You selected " << nr << " rows \n";
 	size_t nc = colsel.size();
-	Rcpp::Rcout << "You selected " << nc << " columns \n";
+	std::cout << "You selected " << nc << " columns \n";
 
 
 	{
 		size_t remainder = (size_t) ((nr_file - nFirstSkipLines) % nSkipUnit);
 		if (remainder != 0) {
-			std::cerr
-					<< "Number of lines to read is not a multiple of nSkipUnit! \n";
+			std::cerr << "Number of lines to read is not a multiple of nSkipUnit! \n";
 			nr++;
+		}
+		else {
+			std::cout << "Number of lines to read is a multiple of nSkipUnit \n";
 		}
 	}
 
+	std::cout << "Calculating max column number...\n";
 	unsigned int colsel_max = *std::max_element(colsel.begin(), colsel.end());
+	std::cout << "Max column number is " << colsel_max << "\n";
 
 	if (colsel_max > nc_file) {
 		throw std::string("Some col number(s) are out of range!");
@@ -51,9 +55,8 @@ std::vector<std::vector<std::string> > readcols(std::string fn,
 	}
 
 	// initialize a 2d vector (matrix) with fixed size
-	std::vector<std::vector<std::string> > res(nc,
-			std::vector<std::string>(nr));
-	std::ifstream infile(fn);
+	std::vector< std::vector<std::string> > res(nc, std::vector<std::string>(nr));
+	std::ifstream infile(fn.c_str());
 	std::string tmpline;
 
 	// skip lines in the beginning
@@ -81,6 +84,7 @@ std::vector<std::vector<std::string> > readcols(std::string fn,
 		}
 	}
 
-	return res;
+    return res;
+
 }
 

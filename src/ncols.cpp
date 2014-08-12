@@ -15,7 +15,7 @@
 size_t ncols(std::string fn) {
     try {
         fileExists(fn);
-        std::ifstream in_file(fn);
+        std::ifstream in_file(fn.c_str());
         std::string tmpline;
         std::getline(in_file, tmpline);
         std::vector<std::string> strs;
@@ -24,7 +24,8 @@ size_t ncols(std::string fn) {
         std::string tmpword = "";
         while(lineStream >> tmpword) {
         	if(not tmpword.empty()) {
-        		Rcpp::Rcout << "I got word: " << tmpword << "\n";
+//        		Rcpp::Rcout << "I got word: " << tmpword << "\n";
+        		std::cout << "I got word: " << tmpword << "\n";
         		numCols++;
         	}
         }
